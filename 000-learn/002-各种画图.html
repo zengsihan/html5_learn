@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+</head>
+<body>
+<h2>练习画图<br>
+    学习</h2>
+<canvas id="can" width="1000" height="1000"></canvas>
+</body>
+<script>
+draw20("can");
+//绘制矩形
+function draw21(id) {
+    var canvas = document.getElementById(id)
+    if (canvas == null)
+        return false;
+    var context = canvas.getContext("2d");
+    /**
+     * 绘制矩形  context.fillRect(x,y,width,height)  strokeRect(x,y,width,height)
+     *  x:矩形起点横坐标（坐标原点为canvas的左上角，当然确切的来说是原始原点，后面写到变形的时候你就懂了，现在暂时不用关系）
+     *  y:矩形起点纵坐标
+     *  width:矩形长度
+     *  height:矩形高度
+     */
+        //实践表明在不设施fillStyle下的默认fillStyle=black
+    context.fillRect(0, 0, 100, 100);
+    //实践表明在不设施strokeStyle下的默认strokeStyle=black
+    context.strokeRect(120, 0, 100, 100);
+
+    //设置纯色
+    context.fillStyle = "red";
+    context.strokeStyle = "blue";
+    context.fillRect(0, 120, 100, 100);
+    context.strokeRect(120, 120, 100, 100);
+    //设置透明度实践证明透明度值>0,<1值越低，越透明，值>=1时为纯色，值<=0时为完全透明
+    context.fillStyle = "rgba(255,0,0,0.1)";
+    context.strokeStyle = "rgba(255,0,0,0.2)";
+    context.fillRect(240,0 , 100, 100);
+    context.strokeRect(240, 120, 100, 100);
+}
+//清除矩形区域
+function draw22(id) {
+    var canvas = document.getElementById(id)
+    if (canvas == null)
+        return false;
+    var context = canvas.getContext("2d");
+    /**
+     * 清除矩形区域 context.clearRect(x,y,width,height)
+     * x:清除矩形起点横坐标
+     * y:清除矩形起点纵坐标
+     *  width:清除矩形长度
+     *  height:清除矩形高度
+     */
+
+        //实践表明在不设施fillStyle下的默认fillStyle=black
+    context.fillRect(0, 0, 100, 100);
+    //实践表明在不设施strokeStyle下的默认strokeStyle=black
+    context.strokeRect(120, 0, 100, 100);
+
+    //设置纯色
+    context.fillStyle = "red";
+    context.strokeStyle = "blue";
+    context.fillRect(0, 120, 100, 100);
+    context.strokeRect(120, 120, 100, 100);
+
+    //设置透明度实践证明透明度值>0,<1值越低，越透明，值>=1时为纯色，值<=0时为完全透明
+    context.fillStyle = "rgba(255,0,0,0.2)";
+    context.strokeStyle = "rgba(255,0,0,0.2)";
+    context.fillRect(240, 0, 100, 100);
+    context.strokeRect(240, 120, 100, 100);
+    context.clearRect(50, 50, 240, 120);
+}
+//圆
+function draw0(id) {
+    var canvas = document.getElementById(id);
+    if (canvas == null) {
+        return false;
+    }
+    var context = canvas.getContext('2d');
+    context.beginPath();
+    /**
+     * 圆弧context.arc(x, y, radius, starAngle,endAngle, anticlockwise)
+     * x:圆心的x坐标
+     * y:圆心的y坐标
+     * radius 半径
+     * straAngle:开始角度
+     * endAngle:结束角度
+     * anticlockwise:是否逆时针   （true）为逆时针，(false)为顺时针
+     *
+     * ps：经过试验证明书本上ture是顺时针，false是逆时针是错误的，
+     *     而且无论是逆时针还是顺时针，角度都沿着顺时针扩大.
+     */
+    context.arc(200, 150, 100, 0, Math.PI*1.5 , false);
+    //不关闭路径路径会一直保留下去，当然也可以利用这个特点做出意想不到的效果
+    context.closePath();
+    context.fillStyle = 'rgba(0,255,0,0.25)';
+    context.fill();
+//        context.stroke();
+}
+//fill与stroke，beginpath
+function draw23(id) {
+    var canvas = document.getElementById(id);
+    if (canvas == null) {
+        return false;
+    }
+    var context = canvas.getContext('2d');
+    var n = 0;
+    /**
+     *1、系统默认在绘制第一个路径的开始点为beginPath
+     * *2、如果画完前面的路径没有重新指定beginPath，
+     *  那么画第其他路径的时候会将前面最近指定的beginPath后的全部路径重新绘制
+     *3、每次调用context.fill（）的时候会自动把当次绘制的路径的开始点和结束点相连，接着填充封闭的部分
+     * ps：书本的结论是   如果没有closePath那么前面的路劲会保留，实验证明正确的结论是
+     *    如果没有重新beginPath那么前面的路劲会保留
+     * ps1：如果你真心凌乱了，那么记住每次画路径都在前后加context.beginPath()   和context.closePath()就行
+     *
+     *
+     */
+
+        //左侧1/4圆弧
+    context.beginPath();
+    context.arc(100, 150, 50, 0, Math.PI/2 , false);
+    context.fillStyle = 'rgba(255,0,0,0.25)';
+    context.fill();
+    context.strokeStyle = 'rgba(255,0,0,0.25)'
+    context.closePath();
+    context.stroke();
+
+    //右侧1/4圆弧
+    context.beginPath();
+    context.arc(300, 150, 50, 0, Math.PI/2 , false);
+    context.fillStyle = 'rgba(255,0,0,0.25)';
+    context.fill();
+    context.strokeStyle = 'rgba(255,0,0,0.25)';
+    context.closePath();
+    context.stroke();
+}
+//绘制线段，moveto与lineto
+function draw8(id) {
+    var canvas = document.getElementById(id);
+    if (canvas == null)
+        return false;
+    var context = canvas.getContext("2d");
+    /**
+     * 绘制线段 context.moveTo(x,y)  context.lineTo(x,y)
+     * 每次画线都从moveTo的点到lineTo的点，
+     * 如果没有moveTo那么第一次lineTo的效果和moveTo一样，
+     * 次lineTo后如果没有moveTo，那么下次lineTo的开始点为前一次lineTo的结束点
+     *
+     */
+
+        //context.beginPath();
+    context.strokeStyle = "rgb(250,0,0)";
+    context.fillStyle = "rgb(250,0,0)"
+    //实验证明第一次lineTo的时候和moveTo功能一样
+    context.lineTo(100, 100);
+    //之后的lineTo会以上次lineTo的节点为开始
+    context.lineTo(200, 200);
+    context.lineTo(200, 100);
+    context.moveTo(200, 50);
+    context.lineTo(100,50);
+//        context.lineTo(100,100);
+    context.stroke();
+//        context.fill();
+}
+//图形——花
+function draw1(id) {
+    var canvas = document.getElementById(id);
+    if (canvas == null)
+        return false;
+    var context = canvas.getContext("2d");
+    /**
+     * 花
+     *
+     */
+
+        //背景颜色
+    context.fillStyle = "#EEEEFF";
+    context.fillRect(0, 0, 400, 300);
+    var n = 0;
+    var dx = 150;
+    var dy = 150;
+    var s = 100;
+    context.beginPath();
+    context.fillStyle = 'rgb(100,255,100)';
+    context.strokeStyle = 'rgb(0,0,100)';
+    var x = Math.sin(0);
+    var y = Math.cos(0);
+    var dig = Math.PI / 15 * 11;
+    for (var i = 0; i < 30; i++) {
+        var x = Math.sin(i * dig);
+        var y = Math.cos(i * dig);
+        context.lineTo(dx + x * s, dy + y * s);
+    }
+    context.closePath();
+    context.fill();
+    context.stroke();
+}
+//绘制贝塞尔曲线，二次样条曲线
+function draw24(id) {
+    var canvas = document.getElementById(id);
+    if (canvas == null) {
+        return false;
+    }
+    var context = canvas.getContext("2d");
+    /**
+     * 绘制贝塞尔曲线（贝济埃、bezier）
+     * context.bezierCurveTo(cp1x,cp1y,cp2x,cp2y,x,y)
+     * cp1x:第一个控制点x坐标
+     * cp1y:第一个控制点y坐标
+     * cp2x:第二个控制点x坐标
+     * cp2y:第二个控制点y坐标
+     * x:终点x坐标
+     * y:终点y坐标
+     *
+     * 绘制二次样条曲线 context.quadraticCurveTo(qcpx,qcpy,qx,qy)
+     * qcpx:二次样条曲线控制点x坐标
+     * qcpy:二次样条曲线控制点y坐标
+     * qx:二次样条曲线终点x坐标
+     * qy:二次样条曲线终点y坐标
+     *
+     */
+//        context.moveTo(50, 50);
+    context.bezierCurveTo(50, 50,150, 50, 150, 150);
+//        context.bezierCurveTo(150, 150,150, 250, 250, 250);
+    context.quadraticCurveTo(150, 250, 250, 250);
+    context.stroke();
+}
+//图形——花2
+function draw2(id) {
+    var canvas = document.getElementById(id);
+    if (canvas == null) {
+        return false;
+    }
+    var context = canvas.getContext("2d");
+    /**
+     * 花
+     *
+     */
+    context.fillStyle = "#EEEFF";
+    context.fillRect(0, 0, 400, 300);
+    var n = 0;
+    var dx = 150;
+    var dy = 150;
+    var s = 100;
+    context.beginPath();
+    context.globalCompositeOperation = 'and';
+    context.fillStyle = 'rgb(100,255,100)';
+    var x = Math.sin(0);
+    var y = Math.cos(0);
+    var dig = Math.PI / 15 * 11;
+    context.moveTo(dx, dy);
+    for (var i = 0; i < 30; i++) {
+        var x = Math.sin(i * dig);
+        var y = Math.cos(i * dig);
+        context.bezierCurveTo(dx + x * s, dy + y * s - 100, dx + x * s + 100, dy + y * s, dx + x * s, dy + y * s);
+    }
+    context.closePath();
+    context.fill();
+    context.stroke();
+}
+//线性渐变,线性渐变颜色
+function draw25(id) {
+    var canvas = document.getElementById(id);
+    if (canvas == null)
+        return false;
+    var context = canvas.getContext('2d');
+    /**
+     * 线性渐变 var lg= context.createLinearGradient(xStart,yStart,xEnd,yEnd)
+     * xstart:渐变开始点x坐标
+     * ystart:渐变开始点y坐标
+     * xEnd:渐变结束点x坐标
+     * yEnd:渐变结束点y坐标
+     *
+     * 线性渐变颜色lg.addColorStop(offset,color)
+     * offset:设定的颜色离渐变结束点的偏移量(0~1)[原色的位置]
+     * color:绘制时要使用的颜色
+     */
+
+    var g1 = context.createLinearGradient(0, 0, 0, 300);
+    g1.addColorStop(0, 'rgb(255,0,0)'); //红
+    g1.addColorStop(0.5, 'rgb(0,255,0)');//绿
+    g1.addColorStop(1, 'rgb(0,0,255)'); //蓝
+
+    //可以把lg对象理解成GDI中线性brush
+    context.fillStyle = g1;
+    //再用这个brush来画正方形
+//        context.fillRect(0, 0, 400, 300);
+    context.arc(150, 150, 150, 0, Math.PI*2 , false);
+    context.fill();
+}
+//径向渐变（发散）
+function draw26(id) {
+    var canvas = document.getElementById(id);
+    if (canvas == null)
+        return false;
+    var context = canvas.getContext('2d');
+    /**
+     *径向渐变（发散）var rg=context.createRadialGradient(xStart,yStart,radiusStart,xEnd,yEnd,radiusEnd)
+     * xStart:发散开始圆心x坐标
+     * yStart:发散开始圆心y坐标
+     * radiusStart:发散开始圆的半径
+     * xEnd:发散结束圆心的x坐标
+     * yEnd:发散结束圆心的y坐标
+     * radiusEnd:发散结束圆的半径
+     *
+     *径向渐变（发散）颜色rg.addColorStop(offset,color)
+     * offset:设定的颜色离渐变结束点的偏移量(0~1)
+     * color:绘制时要使用的颜色
+     */
+
+        //背景颜色
+    context.fillStyle = "#EEEEFF";
+    context.fillRect(0, 0, 550, 200);
+    //同一个圆心画球型
+    var g1 = context.createRadialGradient(550, 200, 50, 600, 200, 100);
+    g1.addColorStop(0.5, 'rgb(255,0,0)');
+    g1.addColorStop(1, 'rgb(0,255,0)');
+    context.fillStyle = g1;
+    context.beginPath();
+    context.arc(550, 200, 100, 0, Math.PI * 2, true);
+    context.closePath();
+    context.fill();
+
+    //不同圆心看径向渐变模型
+    context.strokeStyle = "black";
+    context.strokeRect(0, 0, 400, 300);
+    var g2 = context.createRadialGradient(100, 90, 10, 300, 150, 50);
+    g2.addColorStop(0.3, 'rgb(255,0,0)');
+    g2.addColorStop(0.9, 'rgb(0,255,0)');
+    g2.addColorStop(1, 'rgb(0,0,255)');
+    context.fillStyle = g2;
+    context.fillRect(0, 0, 400, 300);
+}
+//平移,缩放,旋转,
+function draw5(id) {
+    var canvas = document.getElementById(id);
+    if (canvas == null)
+        return false;
+    var context = canvas.getContext("2d");
+    /**
+     *1、平移context.translate(x,y)
+     *  x:坐标原点向x轴方向平移x
+     *  y:坐标原点向y轴方向平移y
+     *2、缩放context.scale(x,y)
+     *  x:x坐标轴按x比例缩放
+     *  y:y坐标轴按y比例缩放
+     *3、旋转context.rotate(angle)
+     *  angle:坐标轴旋转x角度（角度变化模型和画圆的模型一样）
+     *
+     */
+    context.fillStyle = "rgba(255,0,0,0.1)";
+    context.save(); //保存了当前context的状态
+    context.fillStyle = "#EEEEFF";
+    context.fillRect(0, 0, 400, 300);
+
+    context.fillStyle = "rgba(255,0,0,0.1)";
+    //平移 缩放 旋转  1 2 3
+    context.translate(100, 100);
+    context.fillRect(0, 0, 100, 100);
+    context.restore();//恢复到刚刚保存的状态,保存恢复只能使用一次
+    context.scale(0.5, 0.5);
+    context.fillRect(0, 0, 100, 100);
+    context.restore();//再用没有用了
+    context.rotate(Math.PI / 4);
+    context.fillRect(0, 0, 100, 100);
+    //实验表明应该移动的是坐标轴
+    //实验表明缩放的是坐标轴比例
+    //实验表明旋转的是坐标轴
+    //综合上述，因此平移 缩放 旋转 三者的顺序不同都将画出不同的结果
+    /*
+     context.restore(); //恢复到刚刚保存的状态,保存恢复只能使用一次
+     context.save(); //保存了当前context的状态
+     context.fillStyle = "rgba(255,0,0,0.2)";
+     //平移 旋转 缩放 1 3 2
+     context.translate(100, 100);
+     context.rotate(Math.PI / 4);
+     context.scale(0.5, 0.5);
+     context.fillRect(0, 0, 100, 100);
+
+     context.restore(); //恢复到刚刚保存的状态
+     context.save(); //保存了当前context的状态
+     context.fillStyle = "rgba(255,0,0,0.3)";
+     //缩放 平移 旋转 2 1 3
+     context.scale(0.5, 0.5);
+     context.translate(100, 100);
+     context.rotate(Math.PI / 4);
+     context.fillRect(0, 0, 100, 100);
+
+     context.restore(); //恢复到刚刚保存的状态
+     context.save(); //保存了当前context的状态
+     context.fillStyle = "rgba(255,0,0,0.4)";
+     //缩放 旋转 平移  2 3  1
+     context.scale(0.5, 0.5);
+     context.rotate(Math.PI / 4);
+     context.translate(100, 100);
+     context.fillRect(0, 0, 100, 100);
+
+     context.restore(); //恢复到刚刚保存的状态
+     context.save(); //保存了当前context的状态
+     context.fillStyle = "rgba(255,0,0,0.5)";
+     //旋转 平移 缩放  3 1 2
+     context.rotate(Math.PI / 4);
+     context.translate(100, 100);
+     context.scale(0.5, 0.5);
+     context.fillRect(0, 0, 100, 100);
+
+     context.restore(); //恢复到刚刚保存的状态
+     context.save(); //保存了当前context的状态
+     context.fillStyle = "rgba(255,0,0,1)";
+     //旋转 缩放 平移   3 2 1
+     context.rotate(Math.PI / 4);
+     context.scale(0.5, 0.5);
+     context.translate(100, 100);
+     context.fillRect(0, 0, 100, 100);
+     */
+}
+//矩阵变换其实是context内实现平移，缩放，旋转的一种机制
+function draw55(id) {
+    var canvas = document.getElementById(id);
+    if (canvas == null)
+        return false;
+    var context = canvas.getContext("2d");
+    /**
+     *矩阵变换 context.transform(m11,m12,m21,m22,dx,dy)
+     * 所谓的矩阵变换其实是context内实现平移，缩放，旋转的一种机制
+     * 他的主要原理就是矩阵相乘
+     * context.translate(x,y) 等同于context.transform (1,0,0,1,x,y)或context.transform(0,1,1,0.x,y)
+     * context.scale(x,y)等同于context.transform(x,0,0,y,0,0)或context.transform (0,y,x,0, 0,0);
+     * context.rotate(θ)等同于
+     * context.transform(Math.cos(θ*Math.PI/180)，Math.sin(θ*Math.PI/180),
+     *                  -Math.sin(θ*Math.PI/180),Math.cos(θ*Math.PI/180)，0，0）
+     * 或
+     * context.transform(-Math.sin(θ*Math.PI/180),Math.cos(θ*Math.PI/180)，
+     *                    Math.cos(θ*Math.PI/180)，Math.sin(θ*Math.PI/180), 0，0）
+     *    ****不需要*Math.PI/180
+     */
+    context.fillStyle = "rgba(255,0,0,0.1)";
+    context.save(); //保存了当前context的状态
+    context.fillStyle = "#EEEEFF";
+    context.fillRect(0, 0, 400, 300);
+
+    context.fillStyle = "rgba(255,0,0,0.1)";
+    //平移 缩放 旋转  1 2 3
+    context.transform(1,0,0,1,100, 100);
+    context.fillRect(0, 0, 100, 100);
+    context.restore();//恢复到刚刚保存的状态,保存恢复只能使用一次
+    context.transform(0.5,0,0,0.5,0,0);
+    context.fillRect(0, 0, 100, 100);
+//        context.rotate(Math.PI / 4);
+    context.transform(Math.cos(Math.PI/4),Math.sin(Math.PI/4),
+            -Math.sin(Math.PI/4),Math.cos(Math.PI/4),0,0);
+    context.fillRect(0, 0, 100, 100);
+
+}
+//两个图形相互叠加图形的表现形式
+function draw10(id) {
+    var canvas = document.getElementById(id);
+    if (canvas == null) {
+        return false;
+    }
+    var context = canvas.getContext("2d");
+    /**
+     *图形组合 context.globalCompositeOperation=type
+     * 图形组合就是两个图形相互叠加了图形的表现形式,是后画的覆盖掉先画的呢，还是相互重叠的部分不显示等等，至于怎么显示就取决于type的值了
+     *
+     *type：
+     * source-over（默认值）:在原有图形上绘制新图形
+     * destination-over:在原有图形下绘制新图形
+     * source-in:显示原有图形和新图形的交集，新图形在上，所以颜色为新图形的颜色
+     * destination-in:显示原有图形和新图形的交集，原有图形在上，所以颜色为原有图形的颜色
+     * source-out:只显示新图形非交集部分
+     * destination-out:只显示原有图形非交集部分
+     * source-atop:显示原有图形和交集部分，新图形在上，所以交集部分的颜色为新图形的颜色
+     * destination-atop:显示新图形和交集部分，新图形在下，所以交集部分的颜色为原有图形的颜色
+     * lighter:原有图形和新图形都显示，交集部分做颜色叠加
+     * xor:重叠飞部分不现实
+     * copy:只显示新图形
+     *
+     *
+     */
+    var oprtns = new Array(
+            "source-over",
+            "destination-over",
+            "source-in",
+            "destination-in",
+            "source-out",
+            "destination-out",
+            "source-atop",
+            "destination-atop",
+            "lighter",
+            "xor",
+            "copy"
+    );
+    var i = 0;//组合效果编号
+
+    //结合setinterval动态显示组合
+    var int = setInterval(function () {
+        if (i == 10) {
+            i=0;
+        }
+        else {
+            i++;
+        }
+        //蓝色矩形
+        context.fillStyle = "blue";
+        context.fillRect(10, 10, 60, 60);
+        //设置组合方式
+//            context.globalCompositeOperation = oprtns[i];
+        //设置新图形（红色圆形）
+        context.beginPath();
+        context.fillStyle = "red";
+        context.arc(60, 60, 30, 0, Math.PI * 2, false);
+        context.fill();
+        context.globalCompositeOperation = oprtns[i];
+    }, 1000);
+
+}
+//给图形绘制阴影
+function draw27(id) {
+    var canvas = document.getElementById(id);
+    if (canvas == null)
+        return false;
+    var context = canvas.getContext('2d');
+    /**
+     *给图形绘制阴影
+     * context.shadowOffsetX :阴影的横向位移量（默认值为0）
+     * context.shadowOffsetY :阴影的纵向位移量（默认值为0）
+     * context.shadowColor :阴影的颜色
+     * context.shadowBlur :阴影的模糊范围（值越大越模糊）
+     *
+     */
+    context.shadowOffsetX = 10;
+    context.shadowOffsetY = 10;
+    context.shadowColor = 'rgba(100,100,100,1)';
+    context.shadowBlur = 10;
+    context.fillStyle = 'rgba(255,0,0,0.7)';
+    context.fillRect(100, 100, 200, 100);
+}
+//画五角星
+function create5Star(context) {
+    var n = 0;
+    var dx = 100;
+    var dy = 0;
+
+    var s = 50;
+    //创建路径
+    context.beginPath();
+    context.fillStyle = 'rgba(255,0,0,0.5)';
+    var x = Math.sin(0);
+    var y = Math.cos(0);
+    var dig = Math.PI / 5 * 4;
+    for (var i = 0; i < 5; i++) {
+        var x = Math.sin(i * dig);
+        var y = Math.cos(i * dig);
+        context.lineTo(dx + x * s, dy + y * s);
+
+    }
+    context.closePath();
+
+}
+//画五角星阴影
+function draw11(id) {
+    var canvas = document.getElementById(id);
+    if (canvas == null)
+        return false;
+    var context = canvas.getContext("2d");
+    context.fillStyle = "#EEEEFF";
+    context.fillRect(0, 0, 400, 300);
+
+    context.shadowOffsetX = 10;
+    context.shadowOffsetY = 10;
+    context.shadowColor = 'rgba(100,100,100,0.5)';
+    context.shadowBlur =5;
+    //图形绘制
+    context.translate(0, 50);
+    for (var i = 0; i < 3; i++) {
+        context.translate(50, 50);
+        create5Star(context);
+        context.fill();
+    }
+}
+/**
+ *绘制图像
+ *绘图：context.drawImage
+ *图像平铺：context.createPattern(image,type)
+ *图像裁剪：context.clip()
+ *像素处理：var imagedata=context.getImageData(sx,sy,sw,sh)
+ *
+ *绘图：context.drawImage
+ *  context.drawImage(image,x,y)
+ *    image:Image对象var img=new Image(); img.src="url(...)";
+ *    x:绘制图像的x坐标
+ *    y:绘制图像的y坐标
+ *
+ *  context.drawImage(image,x,y,w,h)
+ *    image:Image对象var img=new Image(); img.src="url(...)";
+ *    x:绘制图像的x坐标
+ *    y:绘制图像的y坐标
+ *    w:绘制图像的宽度
+ *    h:绘制图像的高度
+ *  context.drawImage(image,sx,sy,sw,sh,dx,dy,dw,dh):选取图像的一部分矩形区域进行绘制
+ *    image:Image对象var img=new Image(); img.src="url(...)";
+ *    sx：图像上的x坐标
+ *    sy：图像上的y坐标
+ *    sw：矩形区域的宽度
+ *    sh：矩形区域的高度
+ *    dx：画在canvas的x坐标
+ *    dy：画在canvas的y坐标
+ *    dw：画出来的宽度
+ *    dh：画出来的高度
+ *
+ *
+ */
+    //drawImage(image,x,y)
+function draw28(id) {
+    var image = new Image();
+    image.src = "image/001.jpg";
+
+    var canvas = document.getElementById(id);
+    if (canvas == null)
+        return false;
+    var context = canvas.getContext("2d");
+
+    context.fillStyle = "#EEEEFF";
+    context.fillRect(0, 0, 800, 600);
+    image.onload = function () {
+        context.drawImage(image,0,0);
+    }
+}
+//drawImage(image,x,y,w,h)
+function draw12(id) {
+//        var image = new Image();
+//        image.src = "image/001.jpg";
+
+    var canvas = document.getElementById(id);
+    if (canvas == null)
+        return false;
+    var context = canvas.getContext("2d");
+
+    context.fillStyle = "#EEEEFF";
+    var image = new Image();
+    image.src = "image/001.jpg";
+    context.fillRect(0, 0, 400, 300);
+//        image.onload = function () {
+    context.drawImage(image, 50, 50, 300, 200);
+//        }
+}
+//drawImage(image,sx,sy,sw,sh,dx,dy,dw,dh)
+function draw13(id){
+    var image = new Image();
+    image.src = "image/001.jpg";
+    var canvas = document.getElementById(id);
+
+    if (canvas == null)
+        return false;
+    var context = canvas.getContext("2d");
+    context.fillStyle = "#EEEEFF";
+
+    context.fillRect(0, 0, 400, 300);
+    image.onload = function () {
+        context.drawImage(image, 100, 100, 200, 150,50,50,300,200);//这里取的是实际尺寸
+    }
+}
+//图像平铺
+function draw14(id) {
+    var canvas = document.getElementById(id);
+    if (canvas == null)
+        return false;
+    var context = canvas.getContext("2d");
+    /**
+     *图像平铺 context.createPattern(image,type)
+     * type:
+     *  no-repeat:不平铺
+     *  repeat-x:横方向平铺
+     *  repeat-y:纵方向平铺
+     *  repeat:全方向平铺
+     */
+
+    //传统的平铺是用for循环来处理的，现在直接调用接口
+    var image = new Image();
+    var type = ["no-repeat", "repeat-x", "repeat-y", "repeat"];
+    var i = 0;
+    image.src = "image/002.jpg";
+    image.onload = function () {
+        var interval = setInterval(function () {
+            //每次转换平铺类型清空
+            context.clearRect(0, 0, 400, 300);
+            if (i >= 4) {
+                i = 0;
+            }
+            var ptrn = context.createPattern(image, type[i]);
+            context.fillStyle = ptrn;
+            context.fillRect(0, 0, 400, 300);
+            i++;
+        }, 1000);
+    };
+}
+//图像裁剪
+function draw15(id) {
+    var canvas = document.getElementById(id);
+    if (canvas == null)
+        return false;
+    var context = canvas.getContext("2d");
+    /**
+     *图像裁剪：context.clip()
+     *  context.clip()只绘制封闭路径区域内的图像，不绘制路径外部图像，
+     *  用的时候，先创建裁剪区域
+     *  再绘制图像（之后绘制的图形都会采用这个裁剪区域，要取消这个裁剪区域就需要用到保存恢复状态，下面有讲）
+     *
+     */
+
+    context.fillStyle = "black";
+    context.fillRect(0, 0, 400, 300);
+    image = new Image();
+    image.onload = function () {
+        drawImg(context,image);
+    }
+    image.src = "image/001.jpg"
+    function drawImg(context, image) {
+        //圆形裁剪区
+        //createCircleClip(context)
+        //星形裁剪区
+        create5StarClip(context);
+        context.drawImage(image,0,0);
+    }
+    function createCircleClip(context) {
+        context.beginPath();
+        context.arc(200, 150, 100, 0, Math.PI * 2, true);
+        context.closePath();
+        context.clip();
+    }
+    function create5StarClip(context) {
+        var n = 0;
+        var dx = 200;
+        var dy = 135;
+        var s = 150;
+        context.beginPath();
+        var x = Math.sin(0);
+        var y = Math.cos(0);
+        var dig = Math.PI / 5 * 4;
+        for (var i = 0; i < 5; i++) {
+            var x = Math.sin(i * dig);
+            var y = Math.cos(i * dig);
+            context.lineTo(dx + x * s, dy + y * s);
+        }
+        context.closePath();
+        context.clip();
+    }
+}
+//像素处理
+function draw16(id) {
+    var canvas = document.getElementById(id);
+    if (canvas == null)
+        return false;
+    var context = canvas.getContext("2d");
+    /**
+     *像素处理：
+     *获取像素颜色数组： var imagedata=context.getImageData(sx,sy,sw,sh)
+     * sx:canvas的x轴坐标点
+     * sy:canvas的y轴坐标点
+     * sw:距离x的宽度
+     * sh:距离y的高度
+     * 可以利用context.getImageData返回的一个像素颜色数组，顺序是所取像素范围的从左到右，从上到下，
+     * 数组的元素是（所有图形，包括图片，和绘制的图形）每个像素的rgba
+     * [r1,g1,b1,a1,r2,g2,b2,a2...]
+     *
+     *设置像素颜色：context.putImageData(imagedata,dx,dy,dirtyX,dirtyY,dirtyWidth,dirtyHeight)
+     * 对imagedata数组中的各个像素的r、g、b、a值进行修改，再调用putImageData方法进行绘制
+     * imagedata:修改后的imagedata
+     *  dx:重绘图像的起点横坐标（重绘的起点和原来的图像一致的话就会把原来的图形覆盖掉，看起来就像是原来的图像变成现在的图像一样）
+     *  dy:重绘图像的起点纵坐标
+     * 以下可选参数，设置重绘的矩形范围，如果缺省，默认会重绘所有的imegedata
+     *  dirtyX:矩形左上角x轴坐标
+     *  dirtyY:矩形左上角y轴坐标
+     *  dirtyWidth:矩形长度
+     *  dirtyHeight:矩形高度
+     *
+     */
+
+    context.fillStyle = 'red'
+    //在右下角画一个正方形
+    context.fillRect(250,250,150,50);
+    var image = new Image();
+    image.src = "image/001.jpg";
+
+    image.onload = function () {
+        //在左上角画一幅图片
+        context.drawImage(image, 0, 0,200,200);
+
+        //实验证明imagedata取的是canvas所在范围画的图形，不止是图片
+        //不会取该区域内是空白的canvas的像素
+        var imagedata = context.getImageData(0, 0, 400, 300);
+
+        //修改imagedata
+        for (var i = 0, n = imagedata.data.length; i < n; i += 4) {
+
+            imagedata.data[i + 0] = 255 - imagedata.data[i + 0]; //red;
+            imagedata.data[i + 1] = 255 - imagedata.data[i + 1]; //green
+            imagedata.data[i + 2] = 255 - imagedata.data[i + 2]; //blue
+            //imagedata.data[i + 3] = 255 - imagedata.data[i + 3]; //a
+        }
+        context.putImageData(imagedata, 0, 0);
+    }
+}
+//绘制文字
+function draw17(id) {
+    var canvas = document.getElementById(id);
+    if (canvas == null)
+        return false;
+    var context = canvas.getContext("2d");
+    /**
+     *绘制文字
+     * 填充文字：context.fillText(text,x,y)
+     * 绘制文字轮廓 context.strokeText(text,x,y)
+     *   text:要绘制的文字
+     *   x:文字起点的x坐标轴
+     *   y:文字起点的y坐标轴
+     * context.font:设置字体样式
+     * context.textAlign:水平对齐方式
+     *   start、end、right、center
+     * context.textBaseline:垂直对齐方式
+     *   top、hanging、middle、alphabetic、ideographic、bottom
+     * var length=context.measureText(text):计算字体长度(px)那么能不能计算高度啊，很遗憾，不能
+     *
+     */
+
+    context.fillStyle = "#EEEEFF";
+    context.fillRect(0,0,600,500);
+    context.fillStyle = "#00f";
+    context.font = "italic 30px sans-serif";
+    context.textBaseline = 'top';
+    //填充字符串
+    var txt="fill示例文字"
+    context.fillText(txt, 0, 0);
+    var length=context.measureText(txt);
+    context.fillText("长" + length.width + "px", 0, 50);
+    context.font = "bolid 30px sans-serif";
+    txt = "stroke示例文字";
+    length = context.measureText(txt);
+    context.strokeText(txt,0,100);
+    context.fillText("长" + length.width + "px", 0, 150);
+}
+//保存和恢复状态
+function draw18(id) {
+    var canvas = document.getElementById(id);
+    if (canvas == null)
+        return false;
+    var context = canvas.getContext("2d");
+    /**
+     *保存和恢复状态
+     * 保存：context.save()
+     * 恢复：context.restore()
+     * 在上面的裁剪图片提过，一旦设定了裁剪区域，后来绘制的图形都只显示裁剪区域内的内容，
+     * 要“取消”这个裁剪区域才能正常绘制其他图形，其实这个“取消”是利用save（）方法和restore（）方法来实现的。
+     * context.save()：调用该方法，会保存当前context的状态、属性（把他理解成游戏存档）
+     * context.restore():调用该方法就能恢复到save时候context的状态、属性（游戏回档）
+     *
+     */
+
+    context.fillStyle = "red";
+    context.save(); //保存了当前context的状态
+    context.fillStyle = "black";
+    context.fillRect(0, 0, 100, 100);
+    context.restore();//恢复到刚刚保存的状态
+    context.fillRect(0,120,100,100);
+}
+//保存文件,保存绘制出来的图形
+function draw19(id) {
+    var canvas = document.getElementById(id);
+    if (canvas == null)
+        return false;
+    var context = canvas.getContext("2d");
+    /**
+     *保存文件  canvas.toDataURL(MIME)
+     *  在canvas中绘出的图片只是canvas标签而已，并非是真正的图片，是不能右键，另存为的，
+     *  我们可以利用canvas.toDataURL()这个方法把canvas绘制的图形生成一幅图片，生成图片后，就能对图片进行相应的操作了。
+     *
+     *
+     */
+
+    context.fillStyle = "rgb(0,0,225)";
+    context.fillRect(0, 0, 300, 300);
+    context.fillStyle = "rgb(255,255,0)";
+    context.fillRect(10, 20, 50, 50);
+    //把图像保存到新的窗口
+    var w=window.open(canvas.toDataURL("image/jpeg"),"smallwin","width=400,height=350");
+}
+//结合setInterval制作动画
+function draw20(id) {
+    var canvas = document.getElementById(id);
+    if (canvas == null)
+        return false;
+    var context = canvas.getContext("2d");
+    /**
+     *结合setInterval制作动画
+     * 基本原理就是定时清除整个canvas重新绘制，下面给出
+     * 小矩形在矩形区域移动，碰到矩形区域的边缘反弹
+     *
+     */
+
+    var interal = setInterval(function () {
+        move(context);
+    }, 1);
+    var x = 100;//矩形开始坐标
+    var y = 100;
+    var mx = 0;//0右1左
+    var my = 0; //0下1上
+    var ml = 1;//每次移动长度
+    var w = 20;//矩形宽度
+    var h = 20;//矩形高度
+    var cw = 400;//canvas宽度
+    var ch = 300; //canvas高度
+    function move(context) {
+
+        context.clearRect(0, 0, 400, 300);
+        context.fillStyle = "#EEEEFF";
+        context.fillRect(0, 0, 400, 300);
+        context.fillStyle = "red";
+        context.fillRect(x, y, w, h);
+        if (mx == 0) {
+            x = x + ml;
+            if (x >= cw-w) {
+                mx = 1;
+            }
+        }
+        else {
+            x = x - ml;
+            if (x <= 0) {
+                mx = 0;
+            }
+        }
+        if (my == 0) {
+            y = y + ml;
+            if (y >= ch-h) {
+                my = 1;
+            }
+        }
+        else {
+            y = y - ml;
+            if (y <= 0) {
+                my = 0;
+            }
+        }
+    }
+}
+
+</script>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

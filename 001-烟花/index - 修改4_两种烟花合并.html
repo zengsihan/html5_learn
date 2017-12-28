@@ -212,7 +212,7 @@ Particle.prototype.update = function( index ) {
 }
 
 // 画出粒子，就是烟花效果
-Particle.prototype.draw = function() {
+Particle.prototype.draw1 = function() {
 	ctx. beginPath();
 	// 移动到集合中的最后一个跟踪坐标，然后绘制一条线到当前的x和y， 就是画烟花效果轨迹
 	ctx.moveTo( this.coordinates[ this.coordinates.length - 1 ][ 0 ], this.coordinates[ this.coordinates.length - 1 ][ 1 ] );
@@ -220,6 +220,25 @@ Particle.prototype.draw = function() {
 	ctx.strokeStyle = 'hsla(' + this.hue + ', 100%, ' + this.brightness + '%, ' + this.alpha + ')';
 	ctx.stroke();
 }
+
+// Draws the particle
+Particle.prototype.draw2 = function() {
+    var radius = Math.round(random(3, 5));
+
+    // Create a new shiny gradient
+    var gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, radius);
+    gradient.addColorStop(0.0, 'white');
+    gradient.addColorStop(0.1, 'white');
+    gradient.addColorStop(0.1, 'hsla(' + this.hue + ',100%,' + this.brightness + '%,' + this.alpha + ')');
+    gradient.addColorStop(1.0, 'black');
+
+    // Draw the gradient
+    ctx.beginPath();
+    ctx.fillStyle = gradient;
+    ctx.arc(this.x, this.y, radius, Math.PI * 2, false);
+    ctx.fill();
+}
+
 
 // 创建粒子组/爆炸效果
 function createParticles( x, y ) {
@@ -294,7 +313,12 @@ function loop() {
 	// 循环每一个粒子，绘制它，更新它
 	var i = particles.length;
 	while( i-- ) {
-		particles[ i ].draw();
+	    //烟花效果选择
+        if(i%2 == 0){
+		    particles[ i ].draw1();
+        }else {
+		    particles[ i ].draw2();
+        }
 		particles[ i ].update( i );
 	}
 	
